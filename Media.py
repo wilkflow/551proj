@@ -3,7 +3,7 @@
 # Description: The media class
 
 class Media:
-    def __init__(self, if, title, avgp):
+    def __init__(self, id, title, avgp):
         self._id = id
         self._title = title
         self._avgp = avgp
