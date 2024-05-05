@@ -115,18 +115,130 @@ class Recommender:
             res.append(f"{title.ljust(max_title_length)} {runtime.ljust(max_runtime_length)}")
         return res
 
+    def getTVList(self):
+        """
+        function to get all TV shows' title and number of seasons
+        :return: list of TV shows with their titles and number of seasons, formatted in neat columns.
+        """
+        max_title_length = 0
+        max_seasons_length = 0
+        tv_shows = []
+        for show in self._shows.values():
+            if show.get_show_type() == 'TV Show':
+                tv_shows.append((show.get_title(), show.get_show_duration()))
+                if len(show.get_title()) > max_title_length:
+                    max_title_length = len(show.get_title())
+                if len(show.get_show_duration()) > max_seasons_length:
+                    max_seasons_length = len(show.get_show_duration())
+
+        res = []
+        header = f"{'Title'.ljust(max_title_length)} {'Seasons'.ljust(max_seasons_length)}"
+        res.append(header)
+        #print(header)
+        for title, seasons in tv_shows:
+            #print(f"{title.ljust(max_title_length)} {seasons.ljust(max_seasons_length)}")
+            res.append(f"{title.ljust(max_title_length)} {seasons.ljust(max_seasons_length)}")
+        return res
+
+    def getBookList(self):
+        """
+        get book title and auth
+        :return: list of books with their titles and authors, formatted in neat columns.
+        """
+        max_title_length = 0
+        max_authors_length = 0
+        books = []
+        for book in self._books.values():
+            auth = book.get_authors().replace('\\', ', ')
+            books.append((book.get_title(), auth))
+            if len(book.get_title()) > max_title_length:
+                max_title_length = len(book.get_title())
+            if len(auth) > max_authors_length:
+                max_authors_length = len(auth)
+
+        res = []
+        header = f"{'Title'.ljust(max_title_length)} {'Author(s)'.ljust(max_authors_length)}"
+        print(header)
+        res.append(header)
+        for title, authors in books:
+            print(f"{title.ljust(max_title_length)} {authors.ljust(max_authors_length)}")
+            res.append(f"{title.ljust(max_title_length)} {authors.ljust(max_authors_length)}")
+        return res
 
 
-    def printBooks(self):
-        #just for debugging
+    def getMovieStats(self):
+        """
+        Get statistics about movies
+        :return: dict containing the statistics.
+        """
+        stats = {}
+        ratings = []
+        duration = 0
+        directors = []
+        actors = []
+        genres = []
+        mcount = 0
+        for show in self._shows.values():
+            if show.get_show_type() == 'Movie':
+                if show.get_rating() in ratings:
+                    ratings[show.get_rating()] += 1
+                else:
+                    ratings[show.get_rating()] = 1
+                
+                duration += int(show.get_show_duration().replace(' min', ''))
+                dirs = show.get_directors().split('\\')
+                for dir in dirs:
+                    if dir in directors:
+                        directors[dir] += 1
+                    else:
+                        directors[dir] = 1
+                
+                acts = show.get_actors().split('\\')
+                for act in acts:
+                    if act in actors:
+                        actors[act] += 1
+                    else:
+                        actors[act] = 1
+
+                cats = show.get_categories().split('\\')
+                for cat in cats:
+                    if cat in genres:
+                        genres[cat] += 1
+                    else:
+                        genres[cat] = 1
  
-            print(self._books)
+                mcount += 1
+        stats['Average Movie Duration: '] = f'{duration/mcount} minutes'
+        hgcount = 0
+        hg = ''
+        notacount = 0
+        nota = ''
+        notdcount = 0
+        notd = ''
+        for d in directors:
+            if d.values() > notdcount:
+                notd = d
+        stats['Most Prolific Director: '] = notd
+        for a in actors:
+            if a.values() > notacount:
+                nota = a
+        stats['Most Prolific Actor: '] = nota
+        for g in genres:
+            if g.values() > hgcount:
+                hg = g
+        stats['Most Frequent Genre: '] = hg
+
+        #TODO RATING PERCENT
+
+
+        return stats
+
 
 
 def main():
     rec = Recommender()
-    rec.loadShows()
-    rec.getMovieList()
+    rec.loadBooks()
+    rec.getBookList()
 
 if __name__ == "__main__":
     main()
