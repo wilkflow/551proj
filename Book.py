@@ -1,4 +1,4 @@
-# Author: Savva Petrov, Robert Plastina
+# Author: Savva Petrov(wilkflow), Robert Plastina(m-456)
 # Date: 4/29/2003
 # Description: Book class
 

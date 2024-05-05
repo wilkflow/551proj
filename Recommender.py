@@ -1,4 +1,4 @@
-# Author: Savva Petrov, Robert Plastina
+# Author: Savva Petrov(wilkflow), Robert Plastina(m-456)
 # Date: 4/29/2003
 # Description: Recommender class
 
@@ -172,11 +172,11 @@ class Recommender:
         :return: dict containing the statistics.
         """
         stats = {}
-        ratings = []
+        ratings = {}
         duration = 0
-        directors = []
-        actors = []
-        genres = []
+        directors = {}
+        actors = {}
+        genres = {}
         mcount = 0
         for show in self._shows.values():
             if show.get_show_type() == 'Movie':
@@ -216,29 +216,137 @@ class Recommender:
         notdcount = 0
         notd = ''
         for d in directors:
-            if d.values() > notdcount:
+            if directors[d] > notdcount:
                 notd = d
         stats['Most Prolific Director: '] = notd
         for a in actors:
-            if a.values() > notacount:
+            if actors[a] > notacount:
                 nota = a
         stats['Most Prolific Actor: '] = nota
         for g in genres:
-            if g.values() > hgcount:
+            if genres[g] > hgcount:
                 hg = g
         stats['Most Frequent Genre: '] = hg
-
-        #TODO RATING PERCENT
-
-
+        rdict = {}
+        for r in ratings:
+            rdict[r] = f'{ratings[r]/mcount:.2f}'
+        stats['rstat'] = rdict
+ 
         return stats
 
+    def getShowStats(self):
+        """
+        Get statistics about shows
+        :return: dict containing the statistics.
+        """
+        stats = {}
+        ratings = {}
+        duration = 0
+
+        actors = {}
+        genres = {}
+        scount = 0
+        for show in self._shows.values():
+            if show.get_show_type() == 'TV Show':
+                if show.get_rating() in ratings:
+                    ratings[show.get_rating()] += 1
+                else:
+                    ratings[show.get_rating()] = 1
+                
+                duration += int(show.get_show_duration().replace(' Seasons', ''))
+                
+                
+                acts = show.get_actors().split('\\')
+                for act in acts:
+                    if act in actors:
+                        actors[act] += 1
+                    else:
+                        actors[act] = 1
+
+                cats = show.get_categories().split('\\')
+                for cat in cats:
+                    if cat in genres:
+                        genres[cat] += 1
+                    else:
+                        genres[cat] = 1
+ 
+                scount += 1
+        stats['Average Movie Duration: '] = f'{duration/scount:.2f} Seasons'
+        hgcount = 0
+        hg = ''
+        notacount = 0
+        nota = ''
+       
+        
+        for a in actors:
+            if actors[a] > notacount:
+                nota = a
+        stats['Most Prolific Actor: '] = nota
+        for g in genres:
+            if genres[g] > hgcount:
+                hg = g
+        stats['Most Frequent Genre: '] = hg
+        rdict = {}
+        for r in ratings:
+            rdict[r] = f'{ratings[r]/scount:.2f}'
+        stats['rstat'] = rdict
+ 
+        return stats
+
+
+    def getBookStats(self):
+        """
+        Get statistics about books
+        :return: dict containing the statistics.
+        """
+        stats = {}
+
+        pcount = 0
+
+        authors = {}
+        pubs = {}
+        bcount = 0
+        for book in self._books.values():
+
+            pcount += int(book.get_num_pages())
+
+            auth = book.get_authors().split('\\')
+            for au in auth:
+                if au in authors:
+                    authors[au] += 1
+                else:
+                    authors[au] = 1
+
+            if book.get_publisher() in pubs:
+                pubs[book.get_publisher()] += 1
+            else:
+                pubs[book.get_publisher()] = 1
+ 
+            bcount += 1
+        stats['Average Page Count: '] = f'{pcount/bcount:.2f} Seasons'
+        hpc = 0
+        hp = ''
+        notacount = 0
+        nota = ''
+       
+        
+        for a in authors:
+            if authors[a] > notacount:
+                nota = a
+        stats['Most Prolific Author: '] = nota
+        for p in pubs:
+            if pubs[p] > hpc:
+                hp = p
+        stats['Most Prolific Publisher: '] = hp
+
+        print(stats)
+        return stats
 
 
 def main():
     rec = Recommender()
     rec.loadBooks()
-    rec.getBookList()
+    rec.getBookStats()
 
 if __name__ == "__main__":
     main()

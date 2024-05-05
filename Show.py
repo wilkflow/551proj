@@ -1,4 +1,4 @@
-# Author: Savva Petrov, Robert Plastina
+# Author: Savva Petrov(wilkflow), Robert Plastina(m-456)
 # Date: 4/29/2003
 # Description: Show class
 
@@ -55,10 +55,10 @@ class Show(Media):      #same as book should now work in loadshows func
     def set_release_year(self, release_year):
             self._release_year = release_year
 
-    def get_mpaa_rating(self):
+    def get_rating(self):
             return self._mpaa_rating
 
-    def set_mpaa_rating(self, mpaa_rating):
+    def set_rating(self, mpaa_rating):
             self._mpaa_rating = mpaa_rating
 
     def get_show_duration(self):
