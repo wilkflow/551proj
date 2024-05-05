@@ -5,76 +5,77 @@
 
 from Media import Media
 
-class Show(Media):
-    def __init__(self, id, title, avgr, type, dirs, act, cc, date, ry, rate, dur, genres, desc):
-        super().__init__(id, title, avgr)
-        self._type = type
-        self._dirs = dirs
-        self._act = act
-        self._cc = cc
-        self._date = date
-        self._ry = ry
-        self._rate = rate
-        self._dur = dur
-        self._genres = genres
-        self._desc = desc
-    #getters setter like before
-    def get_type(self):
-        return self._type
+class Show(Media):      #same as book should now work in loadshows func
+    def __init__(self, show_id,type,title,director,cast,average_rating,country,date_added,release_year,rating,duration,listed_in,description):
+        super().__init__(show_id, title, average_rating)
+        self._show_type = type
+        self._directors = director
+        self._actors = cast
+        self._country_code = country
+        self._addition_date = date_added
+        self._release_year = release_year
+        self._mpaa_rating = rating
+        self._show_duration = duration
+        self._categories = listed_in
+        self._synopsis = description
+        #getters setter like before
+    def get_show_type(self):
+            return self._show_type
 
-    def set_type(self, type):
-        self._type = type
+    def set_show_type(self, type):
+            self._show_type = type
 
-    def get_dirs(self):
-        return self._dirs
+    def get_directors(self):
+            return self._directors
 
-    def set_dirs(self, dirs):
-        self._dirs = dirs
+    def set_directors(self, directors):
+            self._directors = directors
 
-    def get_act(self):
-        return self._act
+    def get_actors(self):
+            return self._actors
 
-    def set_act(self, act):
-        self._act = act
+    def set_actors(self, actors):
+            self._actors = actors
 
-    def get_cc(self):
-        return self._cc
+    def get_country_code(self):
+            return self._country_code
 
-    def set_country_code(self, cc):
-        self._cc = cc
+    def set_country_code(self, country_code):
+            self._country_code = country_code
 
-    def get_date(self):
-        return self._date
+    def get_addition_date(self):
+            return self._addition_date
 
-    def set_date(self, date):
-        self._date = date
+    def set_addition_date(self, addition_date):
+            self._addition_date = addition_date
 
-    def get_ry(self):
-        return self._ry
+    def get_release_year(self):
+            return self._release_year
 
-    def set_ry(self, ry):
-        self._ry = ry
+    def set_release_year(self, release_year):
+            self._release_year = release_year
 
-    def get_rate(self):
-        return self._rate
+    def get_mpaa_rating(self):
+            return self._mpaa_rating
 
-    def set_rate(self, rate):
-        self._rate = rate
+    def set_mpaa_rating(self, mpaa_rating):
+            self._mpaa_rating = mpaa_rating
 
-    def get_dur(self):
-        return self._dur
+    def get_show_duration(self):
+            return self._show_duration
 
-    def set_duration(self, dur):
-        self._dur = dur
+    def set_show_duration(self, show_duration):
+            self._show_duration = show_duration
 
-    def get_genres(self):
-        return self._genres
+    def get_categories(self):
+            return self._categories
 
-    def set_genres(self, genres):
-        self._genres = genres
+    def set_categories(self, categories):
+            self._categories = categories
 
-    def get_desc(self):
-        return self._desc
+    def get_synopsis(self):
+            return self._synopsis
 
-    def set_description(self, desc):
-        self._desc = desc
+    def set_synopsis(self, synopsis):
+            self._synopsis = synopsis
+
