@@ -4,25 +4,25 @@
 
 from Media import Media
 
-class Book(Media):
-    def __init__(self, id, title, avgr, auth, isbn, isbn13, lang, np, nr, pubdate, pub):
-        super().__init__(id, title, avgr)   #inherit
-        self._auth = auth
+class Book(Media):  #changed order to try to feed info in by dict
+    def __init__(self, bookID,title,authors,average_rating,isbn,isbn13,language_code,num_pages,ratings_count,publication_date,publisher):
+        super().__init__(bookID, title, average_rating)   #inherit
+        self._authors = authors
         self._isbn = isbn
         self._isbn13 = isbn13
-        self._lang = lang
-        self._np = np
-        self._nr = nr
-        self._pubdate = pubdate
-        self._pub = pub
+        self._language_code = language_code
+        self._num_pages = num_pages
+        self._ratings_count = ratings_count
+        self._publication_date = publication_date
+        self._publisher = publisher
 
 
     #getters setters
-    def get_auth(self):
-        return self._auth
+    def get_authors(self):
+        return self._authors
 
-    def set_auth(self, auth):
-        self._auth = auth
+    def set_authors(self, authors):
+        self._authors = authors
 
     def get_isbn(self):
         return self._isbn
@@ -36,33 +36,33 @@ class Book(Media):
     def set_isbn13(self, isbn13):
         self._isbn13 = isbn13
 
-    def get_lang(self):
-        return self._lang
+    def get_language_code(self):
+        return self._language_code
 
-    def set_lang(self, lang):
-        self._lang = lang
+    def set_language_code(self, language_code):
+        self._language_code = language_code
 
-    def get_np(self):
-        return self._np
+    def get_num_pages(self):
+        return self._num_pages
 
-    def set_np(self, np):
-        self._np = np
+    def set_num_pages(self, num_pages):
+        self._num_pages = num_pages
 
-    def get_nr(self):
-        return self._nr
+    def get_ratings_count(self):
+        return self._ratings_count
 
-    def set_nr(self, nr):
-        self._nr = nr
+    def set_ratings_count(self, ratings_count):
+        self._ratings_count = ratings_count
 
-    def get_pubdate(self):
-        return self._pubdate
+    def get_publication_date(self):
+        return self._publication_date
 
-    def set_pubdate(self, pubdate):
-        self._pubdate = pubdate
+    def set_publication_date(self, publication_date):
+        self._publication_date = publication_date
 
-    def get_pub(self):
-        return self._pub
+    def get_publisher(self):
+        return self._publisher
 
-    def set_pub(self, pub):
-        self._pub = pub
+    def set_publisher(self, publisher):
+        self._publisher = publisher
 
