@@ -4,6 +4,7 @@
 
 
 from tkinter import filedialog, messagebox
+from tkinter.messagebox import showerror
 from Book import Book
 from Show import Show
 
@@ -22,7 +23,7 @@ class Recommender:
                 path = filedialog.askopenfilename(title="Select book file", filetypes=[("CSV Files", "*.csv")])
                 if path:
                     break
-                messagebox.showerror("Error", "Please select a valid file.")
+                showerror("Error", "Please select a valid file.")
             
             with open(path, 'r') as file:
                 headers = file.readline().strip().split(',')  # get headers
@@ -46,7 +47,7 @@ class Recommender:
             path = filedialog.askopenfilename(title="Select show file", filetypes=[("CSV Files", "*.csv")])
             if path:
                 break
-            messagebox.showerror("Error", "Please select a valid file.")
+            showerror("Error", "Please select a valid file.")
 
         with open(path, 'r') as file:
                 headers = file.readline().strip().split(',')  # get headers
@@ -69,7 +70,7 @@ class Recommender:
             path = filedialog.askopenfilename(title="Select association file", filetypes=[("CSV Files", "*.csv")])
             if path:
                 break
-            messagebox.showerror("Error", "Please select a valid file.")
+            showerror("Error", "Please select a valid file.")
 
         with open(path, 'r') as file:
             for line in file:
@@ -341,6 +342,95 @@ class Recommender:
 
         print(stats)
         return stats
+
+
+
+    def searchTVMovies(self, show_type, title, director, actor, genre):
+        """
+            search func for shows and movies
+            :param show_type: show type
+            :type show_type: str
+            :param title: title
+            :type title: str
+            :param director: director
+            :type director: str
+            :param genre: genre
+            :type genre: str
+            :return: formatted search output
+        """
+        if show_type not in ["Movie", "TV Show"]:
+            showerror("Invalid media type")
+            return "No Results"
+        
+        if not any([title, director, actor, genre]):
+            showerror("Please enter at least one search parameter")
+            return "No Results"
+        
+        results = []
+        mt = 0
+        md = 0
+        ma = 0
+        mg = 0
+        for show in self._shows.values():
+            if (not title or title.lower() in show.get_title().lower()) and (not director or director.lower() in show.get_directors().lower()) and (not actor or actor.lower() in show.get_actors().lower()) and (not genre or genre.lower() in show.get_categories().lower()):
+                results.append(show)
+                if len(show.get_title()) > mt:
+                    mt = len(show.get_title())
+                if len(show.get_directors().replace('\\', ', '))>md:
+                    md = len(show.get_directors().replace('\\', ', '))
+                if len(show.get_actors().replace('\\', ', ')) > ma:
+                    ma = len(show.get_actors().replace('\\', ', '))
+                if len(show.get_categories().replace('\\', ', '))>mg:
+                    mg = len(show.get_categories().replace('\\', ', '))
+        
+        if not results:
+            return "No Results"
+
+        ret = f"{'Title'.ljust(mt)} {'Director'.ljust(md)} {'Actors'.ljust(ma)} {'Genre'.ljust(mg)}\n"
+        for show in results:
+            ret += f"{show.get_title().ljust(mt)} {show.get_directors().replace('\\', ', ').ljust(md)} {show.get_actors().replace('\\', ', ').ljust(ma)} {show.get_categories().replace('\\', ', ').ljust(mg)}\n"
+        
+        return ret
+
+    def  searchBooks(self, title, author, publisher):
+        """
+            search func for books
+            :param title: title
+            :type title: str
+            :param author: author
+            :type author: str
+            :param publisher: publisher
+            :type publisher: str
+            :return: formatted search output
+        """
+
+        if not any([title, author, publisher]):
+            showerror("Please enter at least one search parameter")
+            return "No Results"
+        
+        results = []
+        mt = 0
+        ma = 0
+        mp = 0
+        for book in self._books.values():
+            if (not title or title.lower() in book.get_title().lower()) and (not author or author.lower() in book.get_authors().lower()) and (not publisher or publisher.lower() in book.get_publisher().lower()):
+                results.append(book)
+                if len(book.get_title()) > mt:
+                    mt = len(book.get_title())
+                if len(book.get_authors().replace('\\', ', '))>ma:
+                    ma =  len(book.get_authors().replace('\\', ', '))
+                if len(book.get_publisher())>mp:
+                    mg = len(book.get_publisher())
+        
+        if not results:
+            return "No Results"
+
+        ret = f"{'Title'.ljust(mt)} {'Authors'.ljust(ma)} {'Publisher'.ljust(mp)}\n"
+        for book in results:
+            ret += f"{book.get_title().ljust(mt)} {book.get_authors().replace('\\', ', ').ljust(ma)} {book.get_publisher().ljust(mp)}\n"
+        
+        return ret
+
 
 
 def main():
