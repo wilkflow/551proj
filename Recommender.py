@@ -458,18 +458,8 @@ class Recommender:
                 ret = ''
                 for book_id in associated_books:
                     book = self._books[book_id]
-                    if len(book.get_title()) > mt:
-                        mt = len(book.get_title())
-                    if len(book.get_authors().replace('\\', ', '))>ma:
-                        ma =  len(book.get_authors().replace('\\', ', '))
-                    if len(book.get_publisher())>mp:
-                        mp = len(book.get_publisher())
-        
+                    ret += f"Title:\n{book.get_title()}\nAuthors:\n{book.get_authors()}\nAverage rating:{book.get_avgp()}\nISBN:\n{book.get_isbn()}\nISBN13:\n{book.get_isbn13()}\nLanguage Code:\n{book.get_language_code()}\nPages:\n{book.get_num_pages()}\nRating Count:\n{book.get_ratings_count()}\nPublication Date:\n{book.get_publication_date()}\nPublisher:\n{book.get_publisher()}\n\n***************************************************************"
                     
-                ret = f"{'Title'.ljust(mt)} {'Authors'.ljust(ma)} {'Publisher'.ljust(mp)}\n"
-                for book_id in associated_books:
-                    book = self._books[book_id]
-                    ret += f"Title: {book.get_title()}, Authors: {book.get_authors()}, Publisher: {book.get_publisher()}\n"
                 return ret
             else:
                 return "No results"
@@ -486,25 +476,14 @@ class Recommender:
                 messagebox.showwarning("Warning", "There are no recommendations for this title.")
                 return "No results"
             
-            # Find associated shows
+
             if book_id in self._associations:
                 associated_shows = self._associations[book_id]
-                result = "Recommended Movies and TV Shows:\n"
+                ret = ''
                 for show_id in associated_shows:
                     show = self._shows[show_id]
-                    if len(show.get_title()) > mt:
-                        mt = len(show.get_title())
-                    if len(show.get_directors().replace('\\', ', '))>md:
-                        md = len(show.get_directors().replace('\\', ', '))
-                    if len(show.get_actors().replace('\\', ', ')) > ma:
-                        ma = len(show.get_actors().replace('\\', ', '))
-                    if len(show.get_categories().replace('\\', ', '))>mg:
-                        mg = len(show.get_categories().replace('\\', ', '))
-                    
-                ret = f"{'Title'.ljust(mt)} {'Director'.ljust(md)} {'Actors'.ljust(ma)} {'Genre'.ljust(mg)}\n"
-                for show_id in associated_shows:
-                    show = self._shows[show_id]
-                    ret += f"{show.get_title().ljust(mt)} {show.get_directors().replace('\\', ', ').ljust(md)} {show.get_actors().replace('\\', ', ').ljust(ma)} {show.get_categories().replace('\\', ', ').ljust(mg)}\n"
+                    ret += f"Title:\n{show.get_title()}\nDirector:\n{show.get_directors().replace('\\', ', ')}\nActors:\n{show.get_actors().replace('\\', ', ')}\nGenres:\n{show.get_categories().replace('\\', ', ')}\n\n***************************************************************"
+
                 return ret
             else:
                 return "No results"
