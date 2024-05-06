@@ -23,8 +23,8 @@ class RecommenderGUI:
         self.movie_stats = tk.Text(self.movie_tab, padx=10, pady=10, wrap=tk.WORD)
         self.movie_list.insert(tk.END, "No data loaded.")
         self.movie_stats.insert(tk.END, "No data loaded.")
-        self.movie_list.config(state=tk.DISABLED)
-        self.movie_stats.config(state=tk.DISABLED)
+        #self.movie_list.config(state=tk.DISABLED)      seriously stop doing this
+        #self.movie_stats.config(state=tk.DISABLED)
         self.movie_list_scroll = tk.Scrollbar(self.movie_tab, command=self.movie_list.yview)
         self.movie_tab.grid_columnconfigure(0, weight=1)
         self.movie_tab.grid_rowconfigure(0, weight=1)
@@ -55,8 +55,8 @@ class RecommenderGUI:
         self.tv_stats = tk.Text(self.tv_tab, padx=10, pady=10, wrap=tk.WORD)
         self.tv_list.insert(tk.END, "No data loaded.")
         self.tv_stats.insert(tk.END, "No data loaded.")
-        self.tv_list.config(state=tk.DISABLED)
-        self.tv_stats.config(state=tk.DISABLED)
+        #self.tv_list.config(state=tk.DISABLED)
+        #self.tv_stats.config(state=tk.DISABLED)
         self.tv_list_scroll = tk.Scrollbar(self.tv_tab, command=self.tv_list.yview)
         self.tv_tab.grid_columnconfigure(0, weight=1)
         self.tv_tab.grid_rowconfigure(0, weight=1)
@@ -82,7 +82,7 @@ class RecommenderGUI:
         self.ms_info = tk.Text(self.ms_search, padx=10, pady=10, wrap=tk.WORD)
         self.ms_info.insert(tk.END, "No data loaded.")
         self.ms_info_scroll = tk.Scrollbar(self.ms_search, command=self.ms_info.yview)
-        self.ms_info.config(state=tk.DISABLED)
+        #self.ms_info.config(state=tk.DISABLED)
         self.ms_cl.grid(row=0, column=0, padx=10, sticky='w')
         self.ms_choice.grid(row=0, column=1, padx=10, pady=5, sticky='we')
         self.ms_choice.state(['readonly'])
@@ -110,7 +110,7 @@ class RecommenderGUI:
         self.bk_info = tk.Text(self.bk_search, padx=10, pady=10, wrap=tk.WORD)
         self.bk_info.insert(tk.END, "No data loaded.")
         self.bk_info_scroll = tk.Scrollbar(self.bk_search, command=self.bk_info.yview)
-        self.bk_info.config(state=tk.DISABLED)
+        #self.bk_info.config(state=tk.DISABLED)
         self.bkt_l.grid(row=0, column=0, sticky="w", padx=10, pady=5)
         self.bkt_e.grid(row=0, column=1, sticky="ew", padx=10, pady=5)
         self.bka_l.grid(row=1, column=0, sticky="w", padx=10, pady=5)
@@ -131,7 +131,7 @@ class RecommenderGUI:
         self.rec_info = tk.Text(self.rec_tab, padx=10, pady=10, wrap=tk.WORD)
         self.rec_info.insert(tk.END, "No data loaded.")
         self.rec_info_scroll = tk.Scrollbar(self.rec_tab, command=self.rec_info.yview)
-        self.rec_info.config(state=tk.DISABLED)
+        #self.rec_info.config(state=tk.DISABLED)
         self.rec_choice.grid(row=0, column=0, padx=10, pady=5, sticky='we')
         self.rec_choice.state(['readonly'])
         self.rect_l.grid(row=1, column=0, sticky="w", padx=10, pady=5)
@@ -163,15 +163,14 @@ class RecommenderGUI:
         self.Toplevel.mainloop()
 
     def loadShows(self):
-        self.movie_list.config(state=tk.NORMAL)
-        self.movie_stats.config(state=tk.NORMAL)
-        self.tv_list.config(state=tk.NORMAL)
-        self.tv_stats.config(state=tk.NORMAL)
+
         self.new_rec.loadShows()
         self.movie_list.delete('1.0', tk.END)
         self.tv_list.delete('1.0', tk.END)
-        self.movie_list.insert(tk.END, self.new_rec.getMovieList())
-        self.tv_list.insert(tk.END, self.new_rec.getTVList())
+        for m in self.new_rec.getMovieList():
+            self.movie_list.insert(tk.END, m+'\n')
+        for s in self.new_rec.getTVList():
+            self.tv_list.insert(tk.END, s+'\n')
         self.movie_stats.delete('1.0', tk.END)
         self.movie_stats.insert(tk.END, 'Ratings:\n')
         self.tv_stats.insert(tk.END, 'Ratings:\n')
@@ -182,8 +181,7 @@ class RecommenderGUI:
 
 
     def loadBooks(self):
-        self.book_list.config(state=tk.NORMAL)
-        self.book_stats.config(state=tk.NORMAL)
+
         self.new_rec.loadBooks()
         self.book_list.delete('1.0', tk.END)
         for b in self.new_rec.getBookList():
@@ -207,7 +205,7 @@ class RecommenderGUI:
         ms_genre = self.msg_e.get()
         self.ms_info.delete('1.0', tk.END)
         self.ms_info.insert(tk.END, self.new_rec.searchTVMovies(ms_type, ms_title, ms_director, ms_actor, ms_genre))
-        self.ms_info.config(state=tk.DISABLED)
+        #self.ms_info.config(state=tk.DISABLED)
 
     def searchBooks(self):
         self.bk_info.config(state=tk.NORMAL)
@@ -216,7 +214,7 @@ class RecommenderGUI:
         bk_publisher = self.bkp_e.get()
         self.bk_info.delete('1.0', tk.END)
         self.bk_info.insert(tk.END, self.new_rec.searchBooks(bk_title, bk_author, bk_publisher))
-        self.bk_info.config(state=tk.DISABLED)
+        #self.bk_info.config(state=tk.DISABLED)
 
     def getRecommendations(self):
         self.rec_info.config(state=tk.NORMAL)
@@ -224,7 +222,7 @@ class RecommenderGUI:
         rec_title = self.rect_e.get()
         self.rec_info.delete('1.0', tk.END)
         self.rec_info.insert(tk.END, self.new_rec.getRecommendations(rec_type, rec_title))
-        self.rec_info.config(state=tk.DISABLED)
+        #self.rec_info.config(state=tk.DISABLED)
 
 def main():
     app = RecommenderGUI()
