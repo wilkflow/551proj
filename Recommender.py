@@ -211,7 +211,7 @@ class Recommender:
                 mcount += 1
 
         for r in ratings:
-            stats[r] = f' {ratings[r]/mcount*100:.2f}'
+            stats[r] = f' {ratings[r]/mcount*100:.2f}%'
 
         stats['Average Movie Duration: '] = f'{duration/mcount} minutes'
         hgcount = 0
@@ -274,7 +274,7 @@ class Recommender:
  
                 scount += 1
         for r in ratings:
-            stats[r] = f' {ratings[r]/scount*100:.2f}'
+            stats[r] = f' {ratings[r]/scount*100:.2f}%'
         stats['Average Movie Duration: '] = f'{duration/scount:.2f} Seasons'
         hgcount = 0
         hg = ''

@@ -35,8 +35,8 @@ class RecommenderGUI:
         self.book_stats = tk.Text(self.book_tab, wrap=tk.WORD)
         self.book_list.insert(tk.END, "No data loaded.")
         self.book_stats.insert(tk.END, "No data loaded.")
-        self.book_list.config(state=tk.DISABLED)
-        self.book_stats.config(state=tk.DISABLED)
+        #self.book_list.config(state=tk.DISABLED) why on gods green earth did you disable books as well
+        #self.book_stats.config(state=tk.DISABLED)
         self.book_list_scroll = tk.Scrollbar(self.book_tab, command=self.book_list.yview)
         self.book_tab.grid_columnconfigure(0, weight=1)
         self.book_tab.grid_rowconfigure(0, weight=1)
@@ -78,7 +78,7 @@ class RecommenderGUI:
         self.ms_info = tk.Text(self.ms_search, wrap=tk.WORD)
         self.ms_info.insert(tk.END, "No data loaded.")
         self.ms_info_scroll = tk.Scrollbar(self.ms_search, command=self.ms_info.yview)
-        self.ms_info.config(state=tk.DISABLED)
+        #self.ms_info.config(state=tk.DISABLED)
         self.ms_cl.grid(row=0, column=0, sticky='e')
         self.ms_choice.grid(row=0, column=1, padx=5, pady=5, sticky='w')
         self.mst_l.grid(row=1, column=0, padx=5, pady=5, sticky='e')
@@ -105,7 +105,7 @@ class RecommenderGUI:
         self.bk_info = tk.Text(self.bk_search, wrap=tk.WORD)
         self.bk_info.insert(tk.END, "No data loaded.")
         self.bk_info_scroll = tk.Scrollbar(self.bk_search, command=self.bk_info.yview)
-        self.bk_info.config(state=tk.DISABLED)
+        #self.bk_info.config(state=tk.DISABLED)
 
         self.rec_tab = ttk.Frame(self.selection)  # The recommendation tab.
         self.selection.add(self.rec_tab, text="Recommendations")
@@ -150,18 +150,22 @@ class RecommenderGUI:
             self.tv_list.insert(tk.END, s+'\n')
         self.tv_stats.delete('1.0', tk.END)
         self.movie_stats.delete('1.0', tk.END)
+        self.movie_stats.insert(tk.END, 'Ratings:\n')
+        self.tv_stats.insert(tk.END, 'Ratings:\n')
         for k,v in self.new_rec.getMovieStats().items(): 
-            self.movie_stats.insert(tk.END, k+v+'%\n')
+            self.movie_stats.insert(tk.END, k+v+'\n')
         for k,v in self.new_rec.getShowStats().items():
-            self.tv_stats.insert(tk.END, k+v+'%\n')
+            self.tv_stats.insert(tk.END, k+v+'\n')
 
 
     def loadBooks(self):
         self.new_rec.loadBooks()
         self.book_list.delete('1.0', tk.END)
-        self.book_list.insert(tk.END, self.new_rec.getBookList())
+        for b in self.new_rec.getBookList():
+            self.book_list.insert(tk.END, b+'\n')
         self.book_stats.delete('1.0', tk.END)
-        self.book_stats.insert(tk.END, self.new_rec.getBookStats())
+        for k,v in self.new_rec.getBookStats().items(): 
+            self.book_stats.insert(tk.END, k+v+'\n\n')
 
     def loadAssociations(self):
         self.new_rec.loadAssociations()
