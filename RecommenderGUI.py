@@ -19,8 +19,8 @@ class RecommenderGUI:
         self.movie_stats = tk.Text(self.movie_tab, height=10, wrap=tk.WORD)
         self.movie_list.insert(tk.END, "No data loaded.")
         self.movie_stats.insert(tk.END, "No data loaded.")
-        self.movie_list.config(state=tk.DISABLED)
-        self.movie_stats.config(state=tk.DISABLED)
+        #self.movie_list.config(state=tk.DISABLED)  ????? WHY IS THIS HERE
+        #self.movie_stats.config(state=tk.DISABLED)
         self.movie_list_scroll = tk.Scrollbar(self.movie_tab, command=self.movie_list.yview)
         self.movie_tab.grid_columnconfigure(0, weight=1)
         self.movie_tab.grid_rowconfigure(0, weight=1)
@@ -51,8 +51,8 @@ class RecommenderGUI:
         self.tv_stats = tk.Text(self.tv_tab, wrap=tk.WORD)
         self.tv_list.insert(tk.END, "No data loaded.")
         self.tv_stats.insert(tk.END, "No data loaded.")
-        self.tv_list.config(state=tk.DISABLED)
-        self.tv_stats.config(state=tk.DISABLED)
+        #self.tv_list.config(state=tk.DISABLED) ???????
+        #self.tv_stats.config(state=tk.DISABLED)
         self.tv_list_scroll = tk.Scrollbar(self.tv_tab, command=self.tv_list.yview)
         self.tv_tab.grid_columnconfigure(0, weight=1)
         self.tv_tab.grid_rowconfigure(0, weight=1)
@@ -143,11 +143,18 @@ class RecommenderGUI:
     def loadShows(self):
         self.new_rec.loadShows()
         self.tv_list.delete('1.0', tk.END)
-        self.tv_list.insert(tk.END, self.new_rec.getMovieList())
-        self.tv_list.insert(tk.END, self.new_rec.getTVList())
+        self.movie_list.delete('1.0', tk.END)
+        for m in self.new_rec.getMovieList():
+            self.movie_list.insert(tk.END, m+'\n')
+        for s in self.new_rec.getTVList():
+            self.tv_list.insert(tk.END, s+'\n')
         self.tv_stats.delete('1.0', tk.END)
-        self.tv_stats.insert(tk.END, self.new_rec.getMovieStats())
-        self.tv_stats.insert(tk.END, self.new_rec.getTVStats())
+        self.movie_stats.delete('1.0', tk.END)
+        for k,v in self.new_rec.getMovieStats().items(): 
+            self.movie_stats.insert(tk.END, k+v+'%\n')
+        for k,v in self.new_rec.getShowStats().items():
+            self.tv_stats.insert(tk.END, k+v+'%\n')
+
 
     def loadBooks(self):
         self.new_rec.loadBooks()

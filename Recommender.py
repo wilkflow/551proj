@@ -209,6 +209,10 @@ class Recommender:
                         genres[cat] = 1
  
                 mcount += 1
+
+        for r in ratings:
+            stats[r] = f' {ratings[r]/mcount*100:.2f}'
+
         stats['Average Movie Duration: '] = f'{duration/mcount} minutes'
         hgcount = 0
         hg = ''
@@ -228,10 +232,7 @@ class Recommender:
             if genres[g] > hgcount:
                 hg = g
         stats['Most Frequent Genre: '] = hg
-        rdict = {}
-        for r in ratings:
-            rdict[r] = f'{ratings[r]/mcount:.2f}'
-        stats['rstat'] = rdict
+        
  
         return stats
 
@@ -254,7 +255,7 @@ class Recommender:
                 else:
                     ratings[show.get_rating()] = 1
                 
-                duration += int(show.get_show_duration().replace(' Seasons', ''))
+                duration += int(show.get_show_duration().replace(' Seasons', '').replace(' Season', ''))
                 
                 
                 acts = show.get_actors().split('\\')
@@ -272,6 +273,8 @@ class Recommender:
                         genres[cat] = 1
  
                 scount += 1
+        for r in ratings:
+            stats[r] = f' {ratings[r]/scount*100:.2f}'
         stats['Average Movie Duration: '] = f'{duration/scount:.2f} Seasons'
         hgcount = 0
         hg = ''
@@ -287,10 +290,7 @@ class Recommender:
             if genres[g] > hgcount:
                 hg = g
         stats['Most Frequent Genre: '] = hg
-        rdict = {}
-        for r in ratings:
-            rdict[r] = f'{ratings[r]/scount:.2f}'
-        stats['rstat'] = rdict
+        
  
         return stats
 
